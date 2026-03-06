@@ -68,13 +68,18 @@ function MiniCapacityBar({ used, budget }: { used: number; budget: number }) {
 
 interface Props {
   onBack: () => void
+  visible: boolean
 }
 
-export default function HistoryView({ onBack }: Props) {
+export default function HistoryView({ onBack, visible }: Props) {
   const [entries, setEntries] = useState<HistoryEntry[]>([])
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
+    // Only read when the panel is actually open — component is always mounted
+    // so a [] dep would only fire on page load, missing any resets done this session
+    if (!visible) return
+    setLoaded(false)
     const result: HistoryEntry[] = []
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -91,7 +96,7 @@ export default function HistoryView({ onBack }: Props) {
     result.sort((a, b) => b.history.weekStart.localeCompare(a.history.weekStart))
     setEntries(result)
     setLoaded(true)
-  }, [])
+  }, [visible])
 
   return (
     <div className="min-h-screen">

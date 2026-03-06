@@ -150,7 +150,7 @@ export default function Home() {
         }`}
         style={{ background: 'linear-gradient(to bottom, #fdfcfb 0%, #f7f0e6 100%)' }}
       >
-        <HistoryView onBack={() => setShowHistory(false)} />
+        <HistoryView onBack={() => setShowHistory(false)} visible={showHistory} />
       </div>
     </div>
   )
