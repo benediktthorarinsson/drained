@@ -31,7 +31,7 @@ export default function OverloadWarning({ tasks, budget, onDefer }: Props) {
     : "You're cutting it close. Consider moving a Nice to Do task to next week."
 
   const s = isOver
-    ? { wrap: 'bg-rose-50 border-rose-200',   heading: 'text-rose-800',  sub: 'text-rose-600',  pts: 'text-rose-400',  btn: 'text-rose-600 hover:text-rose-800' }
+    ? { wrap: 'bg-rose-50 border-rose-200',   heading: 'text-rose-700',  sub: 'text-rose-600',  pts: 'text-rose-400',  btn: 'text-rose-600 hover:text-rose-700' }
     : { wrap: 'bg-amber-50 border-amber-200', heading: 'text-amber-800', sub: 'text-amber-600', pts: 'text-amber-400', btn: 'text-amber-600 hover:text-amber-800' }
 
   return (

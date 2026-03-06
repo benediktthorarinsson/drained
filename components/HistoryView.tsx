@@ -120,7 +120,7 @@ export default function HistoryView({ onBack, visible }: Props) {
         </header>
 
         {/* Content */}
-        {!loaded ? (
+        {!loaded && visible ? (
           <div className="flex justify-center py-20">
             <div className="w-6 h-6 rounded-full border-2 border-sage-300 border-t-sage-500 animate-spin" />
           </div>
