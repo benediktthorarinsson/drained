@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Priority, EnergyCost, ENERGY_VALUES } from '@/lib/types'
+import { useTemplates, Template } from '@/lib/useTemplates'
 
 interface Props {
   onAdd: (task: { name: string; priority: Priority; energyCost: EnergyCost }) => void
@@ -22,11 +23,27 @@ const ENERGY_OPTIONS: { value: EnergyCost; label: string; pts: number; selected:
 
 const UNSELECTED = 'bg-white text-gray-300 border-gray-200 font-medium hover:border-gray-300 hover:text-gray-400'
 
+const PRIORITY_DOT: Record<Priority, string> = {
+  must: 'bg-rose-400',
+  should: 'bg-amber-400',
+  nice: 'bg-sage-400',
+}
+
 export default function TaskForm({ onAdd }: Props) {
   const [name, setName] = useState('')
   const [priority, setPriority] = useState<Priority>('should')
   const [energyCost, setEnergyCost] = useState<EnergyCost>('medium')
   const [error, setError] = useState('')
+  const [showPicker, setShowPicker] = useState(false)
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false)
+  const [savedConfirm, setSavedConfirm] = useState(false)
+
+  const { templates, saveTemplate, deleteTemplate } = useTemplates()
+
+  // Close picker automatically if all templates are deleted
+  useEffect(() => {
+    if (templates.length === 0) setShowPicker(false)
+  }, [templates.length])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -34,15 +51,79 @@ export default function TaskForm({ onAdd }: Props) {
       setError('Give this task a name first.')
       return
     }
+    if (saveAsTemplate) {
+      saveTemplate({ name: name.trim(), priority, energyCost })
+      setSaveAsTemplate(false)
+      setSavedConfirm(true)
+      setTimeout(() => setSavedConfirm(false), 2500)
+    }
     onAdd({ name: name.trim(), priority, energyCost })
     setName('')
     setError('')
   }
 
+  function applyTemplate(t: Template) {
+    setName(t.name)
+    setPriority(t.priority)
+    setEnergyCost(t.energyCost)
+    setShowPicker(false)
+    setError('')
+  }
+
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-card p-4 sm:p-5 space-y-4">
-      <h3 className="text-sm font-semibold text-gray-700">Add a task</h3>
 
+      {/* Heading row + "Use a template" toggle */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-700">Add a task</h3>
+          {templates.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowPicker(p => !p)}
+              className="text-xs text-gray-400 hover:text-sage-600 transition"
+            >
+              {showPicker ? 'Close' : 'Use a template'}
+            </button>
+          )}
+        </div>
+
+        {/* Inline template picker — only shown when templates exist and picker is open */}
+        {showPicker && (
+          <div className="rounded-xl border border-gray-100 overflow-hidden">
+            {templates.map(t => (
+              <div
+                key={t.id}
+                className="flex items-center gap-2 px-3 py-2.5 hover:bg-gray-50 transition border-b border-gray-50 last:border-b-0"
+              >
+                <button
+                  type="button"
+                  onClick={() => applyTemplate(t)}
+                  className="flex items-center gap-2 flex-1 min-w-0 text-left"
+                >
+                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${PRIORITY_DOT[t.priority]}`} />
+                  <span className="text-sm text-gray-700 truncate">{t.name}</span>
+                  <span className="text-xs text-gray-400 flex-shrink-0 ml-auto pl-2">
+                    {ENERGY_VALUES[t.energyCost]}pts
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => deleteTemplate(t.id)}
+                  className="flex-shrink-0 text-gray-300 hover:text-gray-500 transition ml-1"
+                  aria-label={`Delete template: ${t.name}`}
+                >
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12">
+                    <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Task name */}
       <div>
         <input
           type="text"
@@ -54,6 +135,7 @@ export default function TaskForm({ onAdd }: Props) {
         {error && <p className="mt-1 text-xs text-rose-500">{error}</p>}
       </div>
 
+      {/* Priority + energy selectors */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <p className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">Priority</p>
@@ -91,6 +173,22 @@ export default function TaskForm({ onAdd }: Props) {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Save as template checkbox + confirmation */}
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 text-xs text-gray-400 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={saveAsTemplate}
+            onChange={e => setSaveAsTemplate(e.target.checked)}
+            className="accent-sage-500 w-3.5 h-3.5"
+          />
+          Save as template
+        </label>
+        {savedConfirm && (
+          <span className="text-xs text-sage-600">Saved as template 🌿</span>
+        )}
       </div>
 
       <button
