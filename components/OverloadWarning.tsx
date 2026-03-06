@@ -1,6 +1,6 @@
 'use client'
 
-import { Task, ENERGY_VALUES } from '@/lib/types'
+import { Task, ENERGY_VALUES, PRIORITY_ORDER } from '@/lib/types'
 
 interface Props {
   tasks: Task[]
@@ -16,15 +16,18 @@ export default function OverloadWarning({ tasks, budget, onDefer }: Props) {
 
   if (pct <= 85) return null
 
-  // Smart suggestion: highest-energy nice task, falling back to highest-energy should task
-  const nicePool = activeTasks.filter(t => t.priority === 'nice')
-  const pool = nicePool.length > 0 ? nicePool : activeTasks.filter(t => t.priority === 'should')
-  const suggestion = pool.length > 0
-    ? [...pool].sort((a, b) => ENERGY_VALUES[b.energyCost] - ENERGY_VALUES[a.energyCost])[0]
+  // Smart suggestion: lowest priority first (nice → should → must), highest energy as tiebreaker
+  const suggestion = activeTasks.length > 0
+    ? [...activeTasks].sort((a, b) => {
+        const pa = PRIORITY_ORDER.indexOf(a.priority) // nice=0, should=1, must=2
+        const pb = PRIORITY_ORDER.indexOf(b.priority)
+        if (pa !== pb) return pa - pb // lowest priority index first (nice before should)
+        return ENERGY_VALUES[b.energyCost] - ENERGY_VALUES[a.energyCost]
+      })[0]
     : null
 
   const message = isOver
-    ? "You're over capacity. Your week isn't sustainable — something needs to move."
+    ? "Your week is looking pretty packed. It might be worth letting something go."
     : "You're cutting it close. Consider moving a Nice to Do task to next week."
 
   const s = isOver

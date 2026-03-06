@@ -48,8 +48,12 @@ export default function CapacityMeter({ tasks, budget }: Props) {
   // Distinguish 86–100% ("Getting full") from >100% ("Overloaded")
   const pillLabel = status === 'red' && !isOver ? 'Getting full 🟠' : cfg.label
 
+  // When over 100%, keep the card neutral — the bar glow and warning banner are enough signal
+  const cardBg = isOver ? 'bg-white' : cfg.bg
+  const cardBorder = isOver ? 'border-gray-100' : cfg.border
+
   return (
-    <div className={`rounded-2xl border ${cfg.border} ${cfg.bg} p-6 shadow-soft`}>
+    <div className={`rounded-2xl border ${cardBorder} ${cardBg} p-6 shadow-soft`}>
       <div className="flex items-start justify-between mb-1">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-0.5">
