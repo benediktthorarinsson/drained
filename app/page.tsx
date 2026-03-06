@@ -92,7 +92,7 @@ export default function Home() {
           <BudgetEditor budget={state.budget} onSave={setBudget} />
 
           {/* Overload warning */}
-          <OverloadWarning tasks={state.tasks} budget={state.budget} />
+          <OverloadWarning tasks={state.tasks} budget={state.budget} onDefer={deferTask} />
 
           {/* Mid-week check-in */}
           {showCheckin && (

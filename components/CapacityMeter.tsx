@@ -67,10 +67,10 @@ export default function CapacityMeter({ tasks, budget }: Props) {
         {used} of {budget} points used
       </p>
 
-      {/* Meter bar — taller, gradient fill, red glow at 85%+ */}
+      {/* Meter bar — taller, gradient fill, red glow at 85%+, pulsing glow when over 100% */}
       <div
-        className="relative h-5 bg-gray-100 rounded-full overflow-hidden shadow-inner transition-shadow duration-500"
-        style={status === 'red' ? { boxShadow: '0 0 0 3px rgba(251,113,133,0.2), 0 0 16px 4px rgba(239,68,68,0.18)' } : undefined}
+        className={`relative h-5 bg-gray-100 rounded-full overflow-hidden shadow-inner transition-shadow duration-500 ${isOver ? 'animate-glow-pulse' : ''}`}
+        style={status === 'red' && !isOver ? { boxShadow: '0 0 0 3px rgba(251,113,133,0.2), 0 0 16px 4px rgba(239,68,68,0.18)' } : undefined}
       >
         {/* Full-width gradient layer, always rendered */}
         <div
