@@ -52,10 +52,10 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-cream-100">
+    <div className="min-h-screen">
       <div className="max-w-2xl mx-auto px-4 py-10">
         {/* Header */}
-        <header className="mb-8">
+        <header className="mb-12">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">Drained</h1>

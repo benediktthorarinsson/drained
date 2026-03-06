@@ -1,23 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { Priority, EnergyCost, PRIORITY_LABELS, ENERGY_VALUES } from '@/lib/types'
+import { Priority, EnergyCost, ENERGY_VALUES } from '@/lib/types'
 
 interface Props {
   onAdd: (task: { name: string; priority: Priority; energyCost: EnergyCost }) => void
 }
 
-const PRIORITY_OPTIONS: { value: Priority; label: string; color: string }[] = [
-  { value: 'must', label: 'Must Do', color: 'bg-rose-50 text-rose-600 border-rose-200 data-[selected=true]:bg-rose-100 data-[selected=true]:border-rose-400' },
-  { value: 'should', label: 'Should Do', color: 'bg-amber-50 text-amber-600 border-amber-200 data-[selected=true]:bg-amber-100 data-[selected=true]:border-amber-400' },
-  { value: 'nice', label: 'Nice to Do', color: 'bg-sage-50 text-sage-600 border-sage-200 data-[selected=true]:bg-sage-100 data-[selected=true]:border-sage-400' },
+// Unselected: muted grey. Selected: vibrant color with solid border.
+const PRIORITY_OPTIONS: { value: Priority; label: string; selected: string }[] = [
+  { value: 'must',   label: 'Must Do',    selected: 'bg-rose-50 text-rose-600 border-rose-400 font-semibold' },
+  { value: 'should', label: 'Should Do',  selected: 'bg-amber-50 text-amber-600 border-amber-400 font-semibold' },
+  { value: 'nice',   label: 'Nice to Do', selected: 'bg-sage-50 text-sage-600 border-sage-400 font-semibold' },
 ]
 
-const ENERGY_OPTIONS: { value: EnergyCost; label: string; pts: number; color: string }[] = [
-  { value: 'high', label: 'High', pts: 30, color: 'bg-rose-50 text-rose-600 border-rose-200 data-[selected=true]:bg-rose-100 data-[selected=true]:border-rose-400' },
-  { value: 'medium', label: 'Medium', pts: 15, color: 'bg-amber-50 text-amber-600 border-amber-200 data-[selected=true]:bg-amber-100 data-[selected=true]:border-amber-400' },
-  { value: 'low', label: 'Low', pts: 5, color: 'bg-sage-50 text-sage-600 border-sage-200 data-[selected=true]:bg-sage-100 data-[selected=true]:border-sage-400' },
+const ENERGY_OPTIONS: { value: EnergyCost; label: string; pts: number; selected: string }[] = [
+  { value: 'high',   label: 'High',   pts: 30, selected: 'bg-rose-50 text-rose-600 border-rose-400 font-semibold' },
+  { value: 'medium', label: 'Medium', pts: 15, selected: 'bg-amber-50 text-amber-600 border-amber-400 font-semibold' },
+  { value: 'low',    label: 'Low',    pts: 5,  selected: 'bg-sage-50 text-sage-600 border-sage-400 font-semibold' },
 ]
+
+const UNSELECTED = 'bg-white text-gray-300 border-gray-200 font-medium hover:border-gray-300 hover:text-gray-400'
 
 export default function TaskForm({ onAdd }: Props) {
   const [name, setName] = useState('')
@@ -59,9 +62,10 @@ export default function TaskForm({ onAdd }: Props) {
               <button
                 key={opt.value}
                 type="button"
-                data-selected={priority === opt.value}
                 onClick={() => setPriority(opt.value)}
-                className={`px-3 py-1.5 rounded-lg border text-xs font-medium text-left transition ${opt.color}`}
+                className={`px-3 py-1.5 rounded-lg border text-xs text-left transition ${
+                  priority === opt.value ? opt.selected : UNSELECTED
+                }`}
               >
                 {opt.label}
               </button>
@@ -76,12 +80,13 @@ export default function TaskForm({ onAdd }: Props) {
               <button
                 key={opt.value}
                 type="button"
-                data-selected={energyCost === opt.value}
                 onClick={() => setEnergyCost(opt.value)}
-                className={`px-3 py-1.5 rounded-lg border text-xs font-medium text-left transition flex items-center justify-between ${opt.color}`}
+                className={`px-3 py-1.5 rounded-lg border text-xs text-left transition flex items-center justify-between ${
+                  energyCost === opt.value ? opt.selected : UNSELECTED
+                }`}
               >
                 <span>{opt.label}</span>
-                <span className="opacity-60">{opt.pts}pts</span>
+                <span className={energyCost === opt.value ? 'opacity-60' : 'opacity-40'}>{opt.pts}pts</span>
               </button>
             ))}
           </div>

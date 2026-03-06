@@ -7,27 +7,33 @@ interface Props {
   budget: number
 }
 
-const STATUS_COLORS = {
+const STATUS_CONFIG = {
   green: {
-    bar: 'bg-sage-400',
     text: 'text-sage-600',
-    label: 'Looking good',
+    label: 'Looking good 🟢',
     bg: 'bg-sage-50',
     border: 'border-sage-200',
+    pillBg: 'bg-sage-100',
+    pillText: 'text-sage-700',
+    pillBorder: 'border-sage-300',
   },
   yellow: {
-    bar: 'bg-amber-400',
     text: 'text-amber-600',
-    label: 'Getting full',
+    label: 'Getting full 🟡',
     bg: 'bg-amber-50',
     border: 'border-amber-200',
+    pillBg: 'bg-amber-100',
+    pillText: 'text-amber-700',
+    pillBorder: 'border-amber-300',
   },
   red: {
-    bar: 'bg-rose-400',
     text: 'text-rose-600',
-    label: 'Overloaded',
+    label: 'Overloaded 🔴',
     bg: 'bg-rose-50',
     border: 'border-rose-200',
+    pillBg: 'bg-rose-100',
+    pillText: 'text-rose-700',
+    pillBorder: 'border-rose-300',
   },
 }
 
@@ -37,22 +43,23 @@ export default function CapacityMeter({ tasks, budget }: Props) {
   const remaining = Math.max(0, budget - used)
   const pct = budget > 0 ? Math.min((used / budget) * 100, 100) : 0
   const status = getMeterStatus(used, budget)
-  const colors = STATUS_COLORS[status]
+  const cfg = STATUS_CONFIG[status]
   const isOver = used > budget
 
   return (
-    <div className={`rounded-2xl border ${colors.border} ${colors.bg} p-6 shadow-soft`}>
+    <div className={`rounded-2xl border ${cfg.border} ${cfg.bg} p-6 shadow-soft`}>
       <div className="flex items-start justify-between mb-1">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-0.5">
             Weekly Capacity
           </h2>
-          <p className={`text-2xl font-semibold ${colors.text}`}>
+          <p className={`text-2xl font-semibold ${cfg.text}`}>
             {isOver ? `${used - budget} pts over` : `${remaining} pts remaining`}
           </p>
         </div>
-        <span className={`text-sm font-medium px-3 py-1 rounded-full ${colors.bg} ${colors.text} border ${colors.border}`}>
-          {colors.label}
+        {/* Static status pill — no click */}
+        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${cfg.pillBg} ${cfg.pillText} ${cfg.pillBorder} select-none`}>
+          {cfg.label}
         </span>
       </div>
 
@@ -60,16 +67,24 @@ export default function CapacityMeter({ tasks, budget }: Props) {
         {used} of {budget} points used
       </p>
 
-      {/* Meter bar */}
-      <div className="relative h-4 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+      {/* Meter bar — taller, gradient fill, red glow at 85%+ */}
+      <div
+        className="relative h-5 bg-gray-100 rounded-full overflow-hidden shadow-inner transition-shadow duration-500"
+        style={status === 'red' ? { boxShadow: '0 0 0 3px rgba(251,113,133,0.2), 0 0 16px 4px rgba(239,68,68,0.18)' } : undefined}
+      >
+        {/* Full-width gradient layer, always rendered */}
         <div
-          className={`h-full rounded-full transition-meter ${colors.bar}`}
-          style={{ width: `${pct}%` }}
+          className="absolute inset-0 rounded-full"
+          style={{ background: 'linear-gradient(to right, #4ade80 0%, #a3e635 45%, #facc15 60%, #fb923c 78%, #f87171 85%, #ef4444 100%)' }}
         />
-        {/* 60% marker */}
-        <div className="absolute top-0 bottom-0 w-px bg-white/60" style={{ left: '60%' }} />
-        {/* 85% marker */}
-        <div className="absolute top-0 bottom-0 w-px bg-white/60" style={{ left: '85%' }} />
+        {/* Mask — covers unfilled portion with track bg */}
+        <div
+          className="absolute top-0 right-0 bottom-0 bg-gray-100 transition-meter"
+          style={{ left: `${pct}%` }}
+        />
+        {/* Zone markers */}
+        <div className="absolute top-0 bottom-0 w-px bg-white/50 z-10" style={{ left: '60%' }} />
+        <div className="absolute top-0 bottom-0 w-px bg-white/50 z-10" style={{ left: '85%' }} />
       </div>
 
       <div className="flex justify-between mt-1.5 text-[10px] text-gray-300 font-medium">

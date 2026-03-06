@@ -14,7 +14,8 @@
 }
 
 body {
-  background-color: var(--background);
+  background: linear-gradient(to bottom, #fdfcfb 0%, #f7f0e6 100%);
+  min-height: 100vh;
   color: var(--foreground);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
