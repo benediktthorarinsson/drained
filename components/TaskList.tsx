@@ -7,6 +7,7 @@ interface Props {
   flaggedIds: Set<string>
   onToggle: (id: string) => void
   onRemove: (id: string) => void
+  onDefer: (id: string) => void
 }
 
 const PRIORITY_STYLES: Record<Priority, { dot: string; badge: string }> = {
@@ -27,7 +28,7 @@ const PRIORITY_SECTION_LABELS: Record<Priority, string> = {
   nice: 'Nice to Do',
 }
 
-export default function TaskList({ tasks, flaggedIds, onToggle, onRemove }: Props) {
+export default function TaskList({ tasks, flaggedIds, onToggle, onRemove, onDefer }: Props) {
   if (tasks.length === 0) {
     return (
       <div className="text-center py-12 text-gray-300">
@@ -61,6 +62,7 @@ export default function TaskList({ tasks, flaggedIds, onToggle, onRemove }: Prop
                 flagged={flaggedIds.has(task.id)}
                 onToggle={onToggle}
                 onRemove={onRemove}
+                onDefer={onDefer}
               />
             ))}
           </div>
@@ -75,11 +77,13 @@ function TaskRow({
   flagged,
   onToggle,
   onRemove,
+  onDefer,
 }: {
   task: Task
   flagged: boolean
   onToggle: (id: string) => void
   onRemove: (id: string) => void
+  onDefer: (id: string) => void
 }) {
   const styles = PRIORITY_STYLES[task.priority]
   const energyPts = ENERGY_VALUES[task.energyCost]
@@ -114,6 +118,11 @@ function TaskRow({
         <p className={`text-sm text-gray-800 truncate ${task.done ? 'line-through text-gray-400' : ''}`}>
           {task.name}
         </p>
+        {task.deferred && (
+          <span className="inline-flex items-center mt-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-sky-50 text-sky-400 border border-sky-100">
+            Deferred ↩
+          </span>
+        )}
         {flagged && !task.done && (
           <p className="text-[10px] text-amber-500 font-medium mt-0.5">Consider deferring</p>
         )}
@@ -123,6 +132,15 @@ function TaskRow({
         <span className={`text-xs font-semibold ${ENERGY_STYLES[task.energyCost]}`}>
           {energyPts}pts
         </span>
+        {!task.done && (
+          <button
+            onClick={() => onDefer(task.id)}
+            className="opacity-0 group-hover:opacity-100 text-[11px] text-gray-300 hover:text-gray-500 transition whitespace-nowrap"
+            aria-label="Defer to next week"
+          >
+            → Next week
+          </button>
+        )}
         <button
           onClick={() => onRemove(task.id)}
           className="opacity-0 group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-gray-300 hover:text-rose-400 transition"

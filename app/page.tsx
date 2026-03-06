@@ -19,7 +19,7 @@ function getWeekLabel(weekStart: string): string {
 }
 
 export default function Home() {
-  const { state, loaded, setBudget, addTask, removeTask, toggleTask, applyCheckin, resetWeek } = useWeekState()
+  const { state, loaded, setBudget, addTask, removeTask, toggleTask, applyCheckin, resetWeek, deferTask } = useWeekState()
 
   const flaggedIds = useMemo(() => {
     const activeTasks = state.tasks.filter(t => !t.done)
@@ -110,6 +110,7 @@ export default function Home() {
                 flaggedIds={flaggedIds}
                 onToggle={toggleTask}
                 onRemove={removeTask}
+                onDefer={deferTask}
               />
             </div>
           )}

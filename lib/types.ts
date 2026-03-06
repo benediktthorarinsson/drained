@@ -22,6 +22,7 @@ export interface Task {
   energyCost: EnergyCost
   done: boolean
   createdAt: number
+  deferred?: boolean // true if this task was carried over from a previous week
 }
 
 export interface WeekState {
