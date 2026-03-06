@@ -10,6 +10,7 @@ import BudgetEditor from '@/components/BudgetEditor'
 import OverloadWarning from '@/components/OverloadWarning'
 import MidweekCheckin from '@/components/MidweekCheckin'
 import ReflectionModal from '@/components/ReflectionModal'
+import HistoryView from '@/components/HistoryView'
 
 function getWeekLabel(weekStart: string): string {
   const start = new Date(weekStart + 'T00:00:00')
@@ -22,6 +23,7 @@ function getWeekLabel(weekStart: string): string {
 export default function Home() {
   const { state, loaded, setBudget, addTask, removeTask, toggleTask, applyCheckin, resetWeek, deferTask } = useWeekState()
   const [showReflection, setShowReflection] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
 
   const flaggedIds = useMemo(() => {
     const activeTasks = state.tasks.filter(t => !t.done)
@@ -65,12 +67,20 @@ export default function Home() {
                 Week of {getWeekLabel(state.weekStart)}
               </p>
             </div>
-            <button
-              onClick={() => setShowReflection(true)}
-              className="text-xs text-gray-300 hover:text-rose-400 transition"
-            >
-              Reset week
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setShowHistory(true)}
+                className="text-xs text-gray-300 hover:text-gray-500 transition"
+              >
+                History
+              </button>
+              <button
+                onClick={() => setShowReflection(true)}
+                className="text-xs text-gray-300 hover:text-rose-400 transition"
+              >
+                Reset week
+              </button>
+            </div>
           </div>
         </header>
 
@@ -132,6 +142,16 @@ export default function Home() {
           onDone={() => { setShowReflection(false); resetWeek() }}
         />
       )}
+
+      {/* History slide-in panel */}
+      <div
+        className={`fixed inset-0 z-40 overflow-y-auto transition-transform duration-300 ease-in-out ${
+          showHistory ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ background: 'linear-gradient(to bottom, #fdfcfb 0%, #f7f0e6 100%)' }}
+      >
+        <HistoryView onBack={() => setShowHistory(false)} />
+      </div>
     </div>
   )
 }

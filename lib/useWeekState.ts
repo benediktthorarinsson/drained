@@ -104,8 +104,14 @@ export function useWeekState() {
   }, [])
 
   const resetWeek = useCallback(() => {
+    try {
+      localStorage.setItem(
+        `drained-history-${state.weekStart}`,
+        JSON.stringify({ weekStart: state.weekStart, budget: state.budget, tasks: state.tasks, savedAt: Date.now() })
+      )
+    } catch {}
     setState(getDefaultState())
-  }, [])
+  }, [state.weekStart, state.budget, state.tasks])
 
   const deferTask = useCallback((id: string) => {
     const task = state.tasks.find(t => t.id === id)
