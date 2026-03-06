@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useWeekState } from '@/lib/useWeekState'
 import { ENERGY_VALUES, PRIORITY_ORDER, isCheckinDay } from '@/lib/types'
 import CapacityMeter from '@/components/CapacityMeter'
@@ -9,6 +9,7 @@ import TaskList from '@/components/TaskList'
 import BudgetEditor from '@/components/BudgetEditor'
 import OverloadWarning from '@/components/OverloadWarning'
 import MidweekCheckin from '@/components/MidweekCheckin'
+import ReflectionModal from '@/components/ReflectionModal'
 
 function getWeekLabel(weekStart: string): string {
   const start = new Date(weekStart + 'T00:00:00')
@@ -20,6 +21,7 @@ function getWeekLabel(weekStart: string): string {
 
 export default function Home() {
   const { state, loaded, setBudget, addTask, removeTask, toggleTask, applyCheckin, resetWeek, deferTask } = useWeekState()
+  const [showReflection, setShowReflection] = useState(false)
 
   const flaggedIds = useMemo(() => {
     const activeTasks = state.tasks.filter(t => !t.done)
@@ -64,7 +66,7 @@ export default function Home() {
               </p>
             </div>
             <button
-              onClick={() => { if (confirm('Start a fresh week? All tasks will be cleared.')) resetWeek() }}
+              onClick={() => setShowReflection(true)}
               className="text-xs text-gray-300 hover:text-rose-400 transition"
             >
               Reset week
@@ -121,6 +123,15 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+      {showReflection && (
+        <ReflectionModal
+          weekStart={state.weekStart}
+          tasks={state.tasks}
+          budget={state.budget}
+          onDone={() => { setShowReflection(false); resetWeek() }}
+        />
+      )}
     </div>
   )
 }
