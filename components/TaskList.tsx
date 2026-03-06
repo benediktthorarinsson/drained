@@ -134,7 +134,7 @@ function TaskRow({
         {!task.done && (
           <button
             onClick={() => onDefer(task.id)}
-            className="opacity-0 group-hover:opacity-100 text-[11px] text-gray-300 hover:text-gray-500 transition whitespace-nowrap"
+            className="sm:opacity-0 sm:group-hover:opacity-100 text-[11px] text-gray-300 hover:text-gray-500 transition whitespace-nowrap"
             aria-label="Defer to next week"
           >
             → Next week
@@ -142,7 +142,7 @@ function TaskRow({
         )}
         <button
           onClick={() => onRemove(task.id)}
-          className="opacity-0 group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-gray-300 hover:text-gray-500 transition"
+          className="sm:opacity-0 sm:group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-gray-300 hover:text-gray-500 transition"
           aria-label="Remove task"
         >
           <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12">

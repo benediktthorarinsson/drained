@@ -76,9 +76,9 @@ export default function ReflectionModal({ weekStart, tasks, budget, onDone }: Pr
   const canContinue = !(step === 1 && !energy) && !(step === 2 && !capacityMatch)
 
   return (
-    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-        <div className="p-8">
+    <div className="fixed inset-0 z-50 bg-white overflow-y-auto sm:bg-black/20 sm:backdrop-blur-sm sm:flex sm:items-center sm:justify-center sm:p-4">
+      <div className="bg-white w-full sm:max-w-md sm:rounded-2xl sm:shadow-xl">
+        <div className="px-5 py-12 sm:p-8">
           {/* Progress bar */}
           <div className="flex items-center gap-2 mb-8">
             {[1, 2, 3].map(n => (

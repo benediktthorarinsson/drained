@@ -70,13 +70,13 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowHistory(true)}
-                className="text-xs text-gray-300 hover:text-gray-500 transition"
+                className="text-[10px] sm:text-xs text-gray-300 hover:text-gray-500 transition"
               >
                 History
               </button>
               <button
                 onClick={() => setShowReflection(true)}
-                className="text-xs text-gray-300 hover:text-gray-500 transition"
+                className="text-[10px] sm:text-xs text-gray-300 hover:text-gray-500 transition"
               >
                 Reset week
               </button>
@@ -108,7 +108,7 @@ export default function Home() {
 
           {/* Task list */}
           {state.tasks.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-4 sm:p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-semibold text-gray-700">
                   This week

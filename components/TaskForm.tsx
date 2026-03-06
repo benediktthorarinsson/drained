@@ -40,7 +40,7 @@ export default function TaskForm({ onAdd }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-card p-5 space-y-4">
+    <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-card p-4 sm:p-5 space-y-4">
       <h3 className="text-sm font-semibold text-gray-700">Add a task</h3>
 
       <div>
@@ -54,7 +54,7 @@ export default function TaskForm({ onAdd }: Props) {
         {error && <p className="mt-1 text-xs text-rose-500">{error}</p>}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <p className="text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">Priority</p>
           <div className="flex flex-col gap-1.5">

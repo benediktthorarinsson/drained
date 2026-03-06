@@ -53,8 +53,8 @@ export default function CapacityMeter({ tasks, budget }: Props) {
   const cardBorder = isOver ? 'border-gray-100' : cfg.border
 
   return (
-    <div className={`rounded-2xl border ${cardBorder} ${cardBg} p-6 shadow-soft`}>
-      <div className="flex items-start justify-between mb-1">
+    <div className={`rounded-2xl border ${cardBorder} ${cardBg} p-4 sm:p-6 shadow-soft`}>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-1">
         <div>
           <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-0.5">
             Weekly Capacity
@@ -64,7 +64,7 @@ export default function CapacityMeter({ tasks, budget }: Props) {
           </p>
         </div>
         {/* Static status pill — no click */}
-        <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${cfg.pillBg} ${cfg.pillText} ${cfg.pillBorder} select-none`}>
+        <span className={`self-start mt-2 sm:mt-0 text-xs font-semibold px-3 py-1.5 rounded-full border ${cfg.pillBg} ${cfg.pillText} ${cfg.pillBorder} select-none`}>
           {pillLabel}
         </span>
       </div>
