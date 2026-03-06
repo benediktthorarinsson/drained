@@ -130,7 +130,7 @@ export default function HistoryView({ onBack, visible }: Props) {
               Your completed weeks will appear here.
             </p>
             <p className="text-gray-300 text-sm">
-              Reset your first week to get started.
+              Finish out a week and you&apos;ll see it here.
             </p>
           </div>
         ) : (
@@ -171,7 +171,7 @@ export default function HistoryView({ onBack, visible }: Props) {
                     ) : (
                       <>
                         <span className="text-gray-200" aria-hidden>·</span>
-                        <span className="text-gray-300 italic">No reflection recorded</span>
+                        <span className="text-gray-300 italic">Saved without a reflection</span>
                       </>
                     )}
                   </div>

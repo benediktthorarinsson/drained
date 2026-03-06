@@ -10,9 +10,9 @@ interface Props {
 
 const OPTIONS = [
   { label: "I'm fine, full steam ahead", reduction: 0 },
-  { label: "A bit tired — reduce by 20%", reduction: 20 },
-  { label: "Pretty drained — reduce by 35%", reduction: 35 },
-  { label: "Running on empty — reduce by 50%", reduction: 50 },
+  { label: "A bit tired — I'll ease up a little", reduction: 20 },
+  { label: "Pretty drained — let's protect some space", reduction: 35 },
+  { label: "Running on empty — scale it back significantly", reduction: 50 },
 ]
 
 export default function MidweekCheckin({ done, onApply, onDismiss }: Props) {

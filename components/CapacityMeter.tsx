@@ -45,6 +45,8 @@ export default function CapacityMeter({ tasks, budget }: Props) {
   const status = getMeterStatus(used, budget)
   const cfg = STATUS_CONFIG[status]
   const isOver = used > budget
+  // Distinguish 86–100% ("Getting full") from >100% ("Overloaded")
+  const pillLabel = status === 'red' && !isOver ? 'Getting full 🟠' : cfg.label
 
   return (
     <div className={`rounded-2xl border ${cfg.border} ${cfg.bg} p-6 shadow-soft`}>
@@ -59,7 +61,7 @@ export default function CapacityMeter({ tasks, budget }: Props) {
         </div>
         {/* Static status pill — no click */}
         <span className={`text-xs font-semibold px-3 py-1.5 rounded-full border ${cfg.pillBg} ${cfg.pillText} ${cfg.pillBorder} select-none`}>
-          {cfg.label}
+          {pillLabel}
         </span>
       </div>
 

@@ -32,8 +32,7 @@ export default function TaskList({ tasks, flaggedIds, onToggle, onRemove, onDefe
   if (tasks.length === 0) {
     return (
       <div className="text-center py-12 text-gray-300">
-        <div className="text-4xl mb-3">🌿</div>
-        <p className="text-sm">No tasks yet. Add one above.</p>
+        <p className="text-sm">Nothing planned yet — add something when you&apos;re ready. 🌿</p>
       </div>
     )
   }
@@ -143,7 +142,7 @@ function TaskRow({
         )}
         <button
           onClick={() => onRemove(task.id)}
-          className="opacity-0 group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-gray-300 hover:text-rose-400 transition"
+          className="opacity-0 group-hover:opacity-100 w-5 h-5 flex items-center justify-center rounded text-gray-300 hover:text-gray-500 transition"
           aria-label="Remove task"
         >
           <svg className="w-3 h-3" fill="none" viewBox="0 0 12 12">

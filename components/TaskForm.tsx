@@ -31,7 +31,7 @@ export default function TaskForm({ onAdd }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!name.trim()) {
-      setError('Please enter a task name.')
+      setError('Give this task a name first.')
       return
     }
     onAdd({ name: name.trim(), priority, energyCost })
@@ -48,7 +48,7 @@ export default function TaskForm({ onAdd }: Props) {
           type="text"
           value={name}
           onChange={e => { setName(e.target.value); setError('') }}
-          placeholder="What needs to get done?"
+          placeholder="What's on your plate this week?"
           className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-sage-200 focus:border-sage-300 transition"
         />
         {error && <p className="mt-1 text-xs text-rose-500">{error}</p>}

@@ -76,7 +76,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => setShowReflection(true)}
-                className="text-xs text-gray-300 hover:text-rose-400 transition"
+                className="text-xs text-gray-300 hover:text-gray-500 transition"
               >
                 Reset week
               </button>

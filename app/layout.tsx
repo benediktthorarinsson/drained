@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin'], weight: ['300', '400', '500', '600'] })
 
 export const metadata: Metadata = {
   title: 'Drained — Weekly Capacity Planner',
@@ -13,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-cream-100">{children}</body>
+      <body className={`min-h-screen bg-cream-100 ${inter.className}`}>{children}</body>
     </html>
   )
 }
